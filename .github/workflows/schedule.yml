@@ -1,0 +1,26 @@
+name: Post Slack Message Weekly
+
+on:
+  schedule:
+    - cron: '0 3 * * 5'  # UTC 3:00（金曜昼12時JST）
+  workflow_dispatch:
+
+jobs:
+  post_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install slack_sdk
+
+      - name: Run script
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        run: python RandomGroupAssignment.py
