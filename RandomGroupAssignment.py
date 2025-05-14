@@ -18,7 +18,6 @@ START_DATE = datetime(2024, 4, 3)  # スクリプトの開始日
 END_DATE = datetime(2025, 7, 19)  # スクリプトの終了日
 DAYS_OF_WEEK = ["Monday", "Wednesday"]  # Lunch MTGの曜日
 NUM_TEAMS = 3  # 各曜日のチーム数
-LOCATION_MESSAGE = "※ Team 1: Front (on the side of Prof. Hirano's office),  2: Center, 3: Back"  # グループ毎の位置
 SLACK_CHANNEL = "#general"  # 投稿するチャンネル
 
 
@@ -85,6 +84,20 @@ def format_message(day, date, teams):
     message += f"{label} : {members_str}\n"
   message += "─────────────────────────\n"
   return message
+# ロケーションメッセージ
+if NUM_TEAMS == 1:
+  LOCATION_MESSAGE = ""
+elif NUM_TEAMS == 2:
+  LOCATION_MESSAGE = "※ Team 1: Front (on the side of Prof. Hirano's office)  2: Back"
+elif NUM_TEAMS == 3:
+  LOCATION_MESSAGE = "※ Team 1: Front (on the side of Prof. Hirano's office)  2: Center  3: Back"
+elif NUM_TEAMS == 4:
+  LOCATION_MESSAGE = "※ Team 1: Front (on the side of Prof. Hirano's office)  2: Center (window side)  3: Center (hallway side)  4: Back"
+elif NUM_TEAMS == 5:
+  LOCATION_MESSAGE = "※ Team 1: Front (on the side of Prof. Hirano's office)  2: Center (window side)  3: Center (hallway side)  4: Back (window side)  5: Back (door side)"
+else:
+  LOCATION_MESSAGE = ""
+  print(f"Warning: NUM_TEAMS = {NUM_TEAMS} exceeds predefined location mapping.")
 
 # === Slack 投稿関数 ===
 def post_to_slack(message, slack_token, channel):
