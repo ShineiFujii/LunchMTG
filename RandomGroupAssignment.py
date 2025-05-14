@@ -18,7 +18,7 @@ START_DATE = datetime(2024, 4, 3)  # スクリプトの開始日
 END_DATE = datetime(2025, 7, 19)  # スクリプトの終了日
 DAYS_OF_WEEK = ["Monday", "Wednesday"]  # Lunch MTGの曜日
 NUM_TEAMS = 3  # 各曜日のチーム数
-LOCATION_MESSAGE = "※ Team 1: Front,  2: Center, 3: Back"  # グループ毎の位置
+LOCATION_MESSAGE = "※ Team 1: Front (on the side of Prof. Hirano's office),  2: Center, 3: Back"  # グループ毎の位置
 SLACK_CHANNEL = "#general"  # 投稿するチャンネル
 
 
