@@ -9,7 +9,7 @@ from slack_sdk.errors import SlackApiError
 members = {
   "B4": ["Zhang", "Arai", "Uchida", "Karasawa", "Shimabara", "Hara", "Yoshida", "Liang"],
   "M1M2": ["Ito", "Song", "Nakajima", "Kiryu", "Shigeyoshi", "Nishikata", "Watanabe"],
-  "DPD": ["Fujii", "Kuroki"]
+  "DPD": ["Fujii"]
 }
 PI = "Hirano"
 
