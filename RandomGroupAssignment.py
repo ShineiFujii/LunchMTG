@@ -36,21 +36,40 @@ if today > END_DATE:
   exit()
 
 # === メンバーを曜日グループに分割する関数 ===
-def split_into_days(members, pi, days_of_week):
-  group_dict = {day: [] for day in days_of_week}
+#def split_into_days(members, pi, days_of_week):
+ # group_dict = {day: [] for day in days_of_week}
   # PIを最初に全てのグループに追加
-  for day in days_of_week:
-    group_dict[day].append([pi])  # PIは1つのリストとして追加
+  #for day in days_of_week:
+   # group_dict[day].append([pi])  # PIは1つのリストとして追加
   # 各メンバーを曜日ごとに均等に割り当てるため、カテゴリごとに分けて処理
-  category_members = {category: members_list for category, members_list in members.items()}
+  #category_members = {category: members_list for category, members_list in members.items()}
   # 各曜日グループに均等に分配する
-  for category, member_list in category_members.items():
-    random.shuffle(member_list)  # メンバーをシャッフルしてランダムに並べる
+  #for category, member_list in category_members.items():
+   # random.shuffle(member_list)  # メンバーをシャッフルしてランダムに並べる
     # メンバーを曜日に均等に割り当てる
-    for i, member in enumerate(member_list):
-      day = days_of_week[i % len(days_of_week)]  # 丸めて各曜日に割り当て
-      group_dict[day].append([member])  # 各メンバーをリストとして追加
-  return group_dict
+    #for i, member in enumerate(member_list):
+     # day = days_of_week[i % len(days_of_week)]  # 丸めて各曜日に割り当て
+      #group_dict[day].append([member])  # 各メンバーをリストとして追加
+  #return group_dict
+  
+# === メンバーを曜日グループに分割する関数 ===
+def split_into_days(members, pi, days_of_week):
+    group_dict = {day: [] for day in days_of_week}
+
+    # PIを各曜日グループに追加
+    for day in days_of_week:
+        group_dict[day].append([pi])
+
+    # カテゴリごとに処理、交互に曜日割り当ての順番を変える
+    for idx, (category, member_list) in enumerate(members.items()):
+        random.shuffle(member_list)
+        # 偶数番目カテゴリなら: Monday→Wednesday、奇数番目カテゴリなら: Wednesday→Monday
+        order = days_of_week if idx % 2 == 0 else list(reversed(days_of_week))
+        for i, member in enumerate(member_list):
+            day = order[i % len(order)]
+            group_dict[day].append([member])
+
+    return group_dict
 
 # === 各曜日ごとのチーム分け関数 ===
 def assign_teams(group):
