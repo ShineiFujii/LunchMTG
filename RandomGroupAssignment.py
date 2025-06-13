@@ -51,26 +51,29 @@ if today > END_DATE:
      # day = days_of_week[i % len(days_of_week)]  # 丸めて各曜日に割り当て
       #group_dict[day].append([member])  # 各メンバーをリストとして追加
   #return group_dict
-  
-# === メンバーを曜日グループに分割する関数 ===
+
 def split_into_days(members, pi, days_of_week):
-    group_dict = {day: [] for day in days_of_week}
-
-    # PIを各曜日グループに追加
-    for day in days_of_week:
-        group_dict[day].append([pi])
-
-    # カテゴリごとに処理、交互に曜日割り当ての順番を変える
-    for idx, (category, member_list) in enumerate(members.items()):
-        random.shuffle(member_list)
-        # 偶数番目カテゴリなら: Monday→Wednesday、奇数番目カテゴリなら: Wednesday→Monday
-        order = days_of_week if idx % 2 == 0 else list(reversed(days_of_week))
+      group_dict = {day: [] for day in days_of_week}
+      for day in days_of_week:
+          group_dict[day].append([pi])
+  
+      odd_counter = 0  # 奇数カテゴリの出現順
+  
+      for category, member_list in members.items():
+          random.shuffle(member_list)
+          is_odd = len(member_list) % 2 == 1
+          # 奇数カテゴリならカウントを使って順序を制御
+        if   is_odd:
+              order = days_of_week if (odd_counter % 2 == 0) else list(reversed(days_of_week))
+            od  d_counter += 1
+        else:  
+            ord  er = days_of_week  # 偶数なら固定で良い
         for i, member in enumerate(member_list):
             day = order[i % len(order)]
             group_dict[day].append([member])
 
-    return group_dict
-
+      return group_dict
+  
 # === 各曜日ごとのチーム分け関数 ===
 def assign_teams(group):
   combined = sum(group, [])  # groupはリストのリストなので、それらを一つのリストに統合
