@@ -53,27 +53,67 @@ if today > END_DATE:
   #return group_dict
 
 
-def split_into_days(members, pi, days_of_week):
-    group_dict = {day: [] for day in days_of_week}
-    for day in days_of_week:
-        group_dict[day].append([pi])
+#def split_into_days(members, pi, days_of_week):
+ #   group_dict = {day: [] for day in days_of_week}
+  #  for day in days_of_week:
+   #     group_dict[day].append([pi])
 
-    odd_counter = 0  # 奇数カテゴリの出現順
+    #odd_counter = 0  # 奇数カテゴリの出現順
 
-    for category, member_list in members.items():
-        random.shuffle(member_list)
-        is_odd = len(member_list) % 2 == 1
+    #for category, member_list in members.items():
+     #   random.shuffle(member_list)
+      #  is_odd = len(member_list) % 2 == 1
         # 奇数カテゴリならカウントを使って順序を制御
-        if is_odd:
-            order = days_of_week if (odd_counter % 2 == 0) else list(reversed(days_of_week))
-            odd_counter += 1
-        else:
-            order = days_of_week  # 偶数なら固定で良い
-        for i, member in enumerate(member_list):
-            day = order[i % len(order)]
-            group_dict[day].append([member])
+       # if is_odd:
+        #    order = days_of_week if (odd_counter % 2 == 0) else list(reversed(days_of_week))
+         #   odd_counter += 1
+        #else:
+         #   order = days_of_week  # 偶数なら固定で良い
+        #for i, member in enumerate(member_list):
+         #   day = order[i % len(order)]
+          #  group_dict[day].append([member])
 
-    return group_dict
+    #return group_dict
+
+# === メンバーを曜日グループに分割する関数 ===
+def split_into_days(members, pi, days_of_week):
+  group_dict = {day: [] for day in days_of_week}
+  # PIを最初に全てのグループに追加
+  for day in days_of_week:
+    group_dict[day].append([pi])  # PIは1つのリストとして追加
+  # カテゴリの処理順序をランダム化
+  categories = list(members.items())
+  random.shuffle(categories)
+  # 各メンバーを曜日ごとに均等に割り当てるため、カテゴリごとに分けて処理
+  odd_category_count = 0  # 曜日数で割り切れないカテゴリ（余りカテゴリ）のカウンタ
+  for category, member_list in categories:
+    random.shuffle(member_list)  # メンバーをシャッフルしてランダムに並べる
+    # 余りカテゴリの場合はバランス調整ロジック
+    if len(member_list) % len(days_of_week) != 0:
+      if odd_category_count == 0:
+        # 最初の余りカテゴリ：ランダムに開始位置を決定
+        start_offset = random.randint(0, len(days_of_week) - 1)
+      else:
+        # 2番目以降の余りカテゴリ：人数バランスを考慮
+        # 現在の各曜日の人数を計算
+        current_counts = {}
+        for day in days_of_week:
+          current_counts[day] = sum(len(sublist) for sublist in group_dict[day])    
+        # 人数が最も少ない曜日を特定
+        min_count = min(current_counts.values())
+        min_days = [day for day, count in current_counts.items() if count == min_count]    
+        # 人数が少ない曜日に多い方のグループを配置
+        # 同数の場合もランダムに選択（どちらに多い方を配置するかランダム）
+        start_offset = days_of_week.index(random.choice(min_days))
+      odd_category_count += 1
+    else:
+      start_offset = 0  
+    # メンバーを曜日に均等に割り当てる（オフセット適用）
+    for i, member in enumerate(member_list):
+      day_index = (i + start_offset) % len(days_of_week)
+      day = days_of_week[day_index]
+      group_dict[day].append([member])  # 各メンバーをリストとして追加
+  return group_dict
 
 # === 各曜日ごとのチーム分け関数 ===
 def assign_teams(group):
