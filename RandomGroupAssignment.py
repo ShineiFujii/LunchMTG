@@ -9,12 +9,12 @@ from slack_sdk.errors import SlackApiError
 members = {
   "B4": ["Zhang", "Arai", "Uchida", "Karasawa", "Shimabara", "Hara", "Yoshida", "Liang"],
   "M1M2": ["Ito", "Song", "Nakajima", "Kiryu", "Shigeyoshi", "Nishikata", "Watanabe"],
-  "DPD": ["Fujii", "Kuroki"]
+  "DPD": ["Fujii"]
 }
 PI = "Hirano"
 
 # === 設定値 ===
-START_DATE = datetime(2024, 4, 3)  # スクリプトの開始日
+START_DATE = datetime(2025, 4, 3)  # スクリプトの開始日
 END_DATE = datetime(2025, 7, 19)  # スクリプトの終了日
 DAYS_OF_WEEK = ["Monday", "Wednesday"]  # Lunch MTGの曜日
 NUM_TEAMS = 3  # 各曜日のチーム数
@@ -41,14 +41,37 @@ def split_into_days(members, pi, days_of_week):
   # PIを最初に全てのグループに追加
   for day in days_of_week:
     group_dict[day].append([pi])  # PIは1つのリストとして追加
+  # カテゴリの処理順序をランダム化
+  categories = list(members.items())
+  random.shuffle(categories)
   # 各メンバーを曜日ごとに均等に割り当てるため、カテゴリごとに分けて処理
-  category_members = {category: members_list for category, members_list in members.items()}
-  # 各曜日グループに均等に分配する
-  for category, member_list in category_members.items():
+  odd_category_count = 0  # 曜日数で割り切れないカテゴリ（余りカテゴリ）のカウンタ
+  for category, member_list in categories:
     random.shuffle(member_list)  # メンバーをシャッフルしてランダムに並べる
-    # メンバーを曜日に均等に割り当てる
+    # 余りカテゴリの場合はバランス調整ロジック
+    if len(member_list) % len(days_of_week) != 0:
+      if odd_category_count == 0:
+        # 最初の余りカテゴリ：ランダムに開始位置を決定
+        start_offset = random.randint(0, len(days_of_week) - 1)
+      else:
+        # 2番目以降の余りカテゴリ：人数バランスを考慮
+        # 現在の各曜日の人数を計算
+        current_counts = {}
+        for day in days_of_week:
+          current_counts[day] = sum(len(sublist) for sublist in group_dict[day])    
+        # 人数が最も少ない曜日を特定
+        min_count = min(current_counts.values())
+        min_days = [day for day, count in current_counts.items() if count == min_count]    
+        # 人数が少ない曜日に多い方のグループを配置
+        # 同数の場合もランダムに選択（どちらに多い方を配置するかランダム）
+        start_offset = days_of_week.index(random.choice(min_days))
+      odd_category_count += 1
+    else:
+      start_offset = 0  
+    # メンバーを曜日に均等に割り当てる（オフセット適用）
     for i, member in enumerate(member_list):
-      day = days_of_week[i % len(days_of_week)]  # 丸めて各曜日に割り当て
+      day_index = (i + start_offset) % len(days_of_week)
+      day = days_of_week[day_index]
       group_dict[day].append([member])  # 各メンバーをリストとして追加
   return group_dict
 
