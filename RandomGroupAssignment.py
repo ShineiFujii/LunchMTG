@@ -7,15 +7,15 @@ from slack_sdk.errors import SlackApiError
 
 # === メンバーリスト ===
 members = {
-  "B4": ["Zhang", "Arai", "Uchida", "Karasawa", "Shimabara", "Hara", "Yoshida", "Liang"],
+  "B4": ["Arai", "Uchida", "Karasawa", "Shimabara", "Hara", "Yoshida", "Liang"],
   "M1M2": ["Ito", "Song", "Nakajima", "Kiryu", "Shigeyoshi", "Nishikata", "Watanabe"],
-  "DPD": ["Fujii"]
+  "DPD": ["Shujun, Fujii"]
 }
 PI = "Hirano"
 
 # === 設定値 ===
-START_DATE = datetime(2025, 4, 3)  # スクリプトの開始日
-END_DATE = datetime(2025, 7, 19)  # スクリプトの終了日
+START_DATE = datetime(2025, 9, 27)  # スクリプトの開始日
+END_DATE = datetime(2025, 1, 21)  # スクリプトの終了日
 DAYS_OF_WEEK = ["Monday", "Wednesday"]  # Lunch MTGの曜日
 NUM_TEAMS = 3  # 各曜日のチーム数
 SLACK_CHANNEL = "#general"  # 投稿するチャンネル
