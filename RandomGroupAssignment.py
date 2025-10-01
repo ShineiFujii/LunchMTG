@@ -7,10 +7,10 @@ from slack_sdk.errors import SlackApiError
 
 # === メンバーリスト ===
 members = {
-  #"B4": ["Arai", "Uchida", "Karasawa", "Shimabara", "Hara", "Yoshida", "Liang"],
-  #"M1M2": ["Ito", "Song", "Nakajima", "Kiryu", "Shigeyoshi", "Nishikata", "Watanabe"],
-  #"DPD": ["Shujun, Fujii"]
-  "All":["Arai", "Uchida", "Karasawa", "Shimabara", "Hara", "Yoshida", "Liang", "Ito", "Song", "Nakajima", "Kiryu", "Shigeyoshi", "Nishikata", "Watanabe", "Shujun, Fujii"]
+  "B4": ["Arai", "Uchida", "Karasawa", "Shimabara", "Hara", "Yoshida", "Liang"],
+  "M1M2": ["Ito", "Song", "Nakajima", "Kiryu", "Shigeyoshi", "Nishikata", "Watanabe"],
+  "DPD": ["Shujun", "Fujii"]
+  #"All": ["Arai", "Uchida", "Karasawa", "Shimabara", "Hara", "Yoshida", "Liang", "Ito", "Song", "Nakajima", "Kiryu", "Shigeyoshi", "Nishikata", "Watanabe", "Shujun", "Fujii"]
 }
 PI = "Hirano"
 
