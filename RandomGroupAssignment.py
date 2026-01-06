@@ -15,7 +15,7 @@ members = {
 PI = "Hirano"
 
 # === 設定値 ===
-START_DATE = datetime(2026, 1, 5)  # スクリプトの開始日
+START_DATE = datetime(2026, 1, 12)  # スクリプトの開始日
 END_DATE = datetime(2026, 1, 21)  # スクリプトの終了日
 DAYS_OF_WEEK = ["Monday", "Wednesday"]  # Lunch MTGの曜日
 NUM_TEAMS = 3  # 各曜日のチーム数
